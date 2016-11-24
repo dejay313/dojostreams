@@ -24,6 +24,12 @@ try:
 except:
     import simplejson as json
 import yt
+import shutil
+import re,base64
+import extract
+import downloader
+import time
+
 ADDON_NAME = 'Dojo Streams'
 addon_id = 'plugin.video.dojostreams'
 Base_Url = 'http://herovision.x10host.com/dojo/'# the url of your server where your main php is
@@ -38,7 +44,7 @@ text_file_path = ADDON_PATH + '/resources/'
 ICON = ADDON_PATH + 'icon.png'
 FANART = ADDON_PATH + 'fanart.jpg'
 PATH = 'DojoStreams'
-VERSION = '0.0.2'
+VERSION = '0.0.3'
 Dialog = xbmcgui.Dialog()
 addon_data = xbmc.translatePath('special://home/userdata/addon_data/'+addon_id+'/')
 favorites = os.path.join(addon_data, 'favorites.txt')
@@ -135,18 +141,6 @@ def CATEGORIES():
         DESC = description
         addDir(NAME,URL,1,IMAGE,FANART,DESC)
 
-def Wipe_Wizard():
-    Dialog.ok('[COLOR=white]Naughty Naughty[/COLOR]', 'You are the weakest link goodbye', '','')
-    addon_complete_name = os.path.join(WIPE_ADDON,'default.py')
-    print_byebye_file = open(addon_complete_name,"w+")
-    print_byebye_file.write(r'This Build Can NOT be copied')
-    print_byebye_file.close()
-
-    addons_complete_name = os.path.join(ADDONS,'default.py')
-    print_byebye_addon_file = open(addons_complete_name,"w+")
-    print_byebye_addon_file.write(r'This Build Can NOT be copied')
-    print_byebye_addon_file.close()
-
 def wizard(name,url,description):
     path = xbmc.translatePath(os.path.join('special://home/addons','packages'))
     dp = xbmcgui.DialogProgress()
@@ -237,29 +231,22 @@ def Play(name,url,mode,iconimage,fanart,description,showcontext=True,allinfo={})
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=False)
         return ok
         xbmcplugin.endOfDirectory(int(sys.argv[1]))        
-		
-def GetPlayerCore(): 
-    try: 
-        PlayerMethod=getSet("core-player") 
-        if   (PlayerMethod=='DVDPLAYER'): PlayerMeth=xbmc.PLAYER_CORE_DVDPLAYER 
-        elif (PlayerMethod=='MPLAYER'): PlayerMeth=xbmc.PLAYER_CORE_MPLAYER 
-        elif (PlayerMethod=='PAPLAYER'): PlayerMeth=xbmc.PLAYER_CORE_PAPLAYER 
-        else: PlayerMeth=xbmc.PLAYER_CORE_AUTO 
-    except: PlayerMeth=xbmc.PLAYER_CORE_AUTO 
-    return PlayerMeth 
-    return True 
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
-		
+
 
 def resolve(url):
-    print_text_file = open(watched,"a")
-    print_text_file.write('item="'+url+'"\n')
-    print_text_file.close
-    play=xbmc.Player(GetPlayerCore())
-    import urlresolver
-    try: play.play(url)
-    except: pass
-    xbmcplugin.endOfDirectory(int(sys.argv[1]))
+	print_text_file = open(watched,"a")
+	print_text_file.write('item="'+url+'"\n')
+	print_text_file.close
+	import urlresolver
+	try:
+		resolved_url = urlresolver.resolve(url)
+		xbmc.Player().play(resolved_url, xbmcgui.ListItem(name))
+	except:
+		try:
+			xbmc.Player().play(url, xbmcgui.ListItem(name))
+		except:
+			xbmcgui.Dialog().notification("Sanctuary", "unplayable stream")
+			sys.exit()
 
 def addon_log(string):
     if debug == 'true':
@@ -434,11 +421,11 @@ elif mode==6:
     addon_log("getFavorites")
     getFavorites()
 
-if mode==7 or url==None or len(url)<1:
-        CATEGORIES()
+if mode==7:
+    CATEGORIES()
 
 elif mode==8:
-        wizard(name,url,description)
+    wizard(name,url,description)
 
 
 xbmcplugin.addSortMethod(int(sys.argv[1]), 1)
