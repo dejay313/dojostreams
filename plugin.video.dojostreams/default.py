@@ -28,7 +28,7 @@ ADDON_NAME = 'Dojo Streams'
 addon_id = 'plugin.video.dojostreams'
 Base_Url = 'http://herovision.x10host.com/dojo/'# the url of your server where your main php is
 Main_Menu_File_Name = 'main.php'# the name of you main php here
-search_filenames = ['','','']#enter the names of the php files you want to include in search here
+search_filenames = ['dojo','','']#enter the names of the php files you want to include in search here
 ########################################################################################
 ### FAVOURITES SECTION IS NOT THIS AUTHORS CODE, I COULD NOT GET IT TO REMOVE FAVOURITES SO ALL CREDIT DUE TO THEM, SORRY IM NOT SURE WHERE IT CAME FROM BUT GOOD WORK :) ###
 USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3'
@@ -38,7 +38,7 @@ text_file_path = ADDON_PATH + '/resources/'
 ICON = ADDON_PATH + 'icon.png'
 FANART = ADDON_PATH + 'fanart.jpg'
 PATH = 'DojoStreams'
-VERSION = '0.0.1'
+VERSION = '0.0.2'
 Dialog = xbmcgui.Dialog()
 addon_data = xbmc.translatePath('special://home/userdata/addon_data/'+addon_id+'/')
 favorites = os.path.join(addon_data, 'favorites.txt')
