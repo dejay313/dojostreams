@@ -18,17 +18,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-import urllib2, urllib, xbmcgui, xbmcplugin, xbmcaddon, xbmc, re, sys, os
+import urllib2, urllib, xbmcgui, xbmcplugin, xbmcaddon, xbmc, re, sys, os, shutil, base64, extract, downloader, time
 try:
     import json
 except:
     import simplejson as json
 import yt
-import shutil
-import re,base64
-import extract
-import downloader
-import time
+
+from threading import Thread
 
 ADDON_NAME = 'Dojo Streams'
 addon_id = 'plugin.video.dojostreams'
@@ -44,12 +41,13 @@ text_file_path = ADDON_PATH + '/resources/'
 ICON = ADDON_PATH + 'icon.png'
 FANART = ADDON_PATH + 'fanart.jpg'
 PATH = 'DojoStreams'
-VERSION = '0.0.3'
+VERSION = '0.0.2'
 Dialog = xbmcgui.Dialog()
 addon_data = xbmc.translatePath('special://home/userdata/addon_data/'+addon_id+'/')
 favorites = os.path.join(addon_data, 'favorites.txt')
 watched = addon_data + 'watched.txt'
 debug = ADDON.getSetting('debug')
+Decode = base64.decodestring
 if os.path.exists(addon_data)==False:
     os.makedirs(addon_data)
 if not os.path.exists(watched):
@@ -64,16 +62,17 @@ def Main_Menu():
     Regex = re.compile('<a href="(.+?)" target="_blank"><img src="(.+?)" style="max-width:200px;" /><description = "(.+?)" /><background = "(.+?)" </background></a><br><b>(.+?)</b>').findall(OPEN)
     for url,icon,desc,fanart,name in Regex:
         if name == '[COLORred]Favourites[/COLOR]':
-            Menu(name,url,6,icon,fanart,desc)	
+            Menu(name,url,6,icon,fanart,desc,'')	
         elif 'php' in url:
-            Menu(name,url,1,icon,fanart,desc)
-
+            Menu(name,url,1,icon,fanart,desc,'')
+        elif 'watchseries' in url:
+            Menu(name,url,100100,icon,fanart,desc,'')
 
         else:
             Play(name,url,2,icon,fanart,desc)
     else:
-        Menu('[COLORred]Builds Section[/COLOR]','',7,icon,fanart,desc)
-        Menu('[COLORred]Dojo Search[/COLOR]',url,3,icon,fanart,desc)
+        Menu('[COLORred]Builds Section[/COLOR]','',7,icon,fanart,desc,'')
+        Menu('[COLORred]Dojo Search[/COLOR]',url,3,icon,fanart,desc,'')
 
     setView('tvshows', 'Media Info 3')			
 	
@@ -89,7 +88,9 @@ def Second_Menu(url):
                 print_text_file.write('item="'+name+'"\n')
                 print_text_file.close
         if 'php' in url:
-            Menu(name,url,1,icon,fanart,desc)
+            Menu(name,url,1,icon,fanart,desc,'')
+        elif 'watchseries' in url:
+            Menu(name,url,100100,icon,fanart,desc,'')
         else:
             Play(name,url,2,icon,fanart,desc)
     setView('tvshows', 'Media Info 3')
@@ -121,7 +122,7 @@ def Search():
 								print_text_file.write('item="'+name+'"\n')
 								print_text_file.close
 						if 'php' in url:
-							Menu(name,url,1,icon,fanart,desc)
+							Menu(name,url,1,icon,fanart,desc,'')
 						else:
 							Play(name,url,2,icon,fanart,desc)
 						
@@ -139,7 +140,7 @@ def CATEGORIES():
         IMAGE = iconimage
         FANART = fanart
         DESC = description
-        addDir(NAME,URL,1,IMAGE,FANART,DESC)
+        addDir(NAME,URL,8,IMAGE,FANART,DESC)
 
 def wizard(name,url,description):
     path = xbmc.translatePath(os.path.join('special://home/addons','packages'))
@@ -169,7 +170,129 @@ def addDir(name,url,mode,iconimage,fanart,description):
         liz.setProperty( "Fanart_Image", fanart )
         ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=False)
         return ok
+###########################Watch series Grab##########################################
+Main 		= (Decode('aHR0cDovL3d3dy53YXRjaHNlcmllc2dvLnRv'))
+Sources = ['daclips','filehoot','allmyvideos','vidspot','vodlocker','vidto']	                                    
 
+def Grab_Season(iconimage,url,extra):
+    image = ' '
+    description = ' '
+    fanart = ' '
+    season = ' '
+    OPEN = Open_Url(url)
+    image = re.compile('<img src="(.+?)">').findall(OPEN)
+    for image in image:
+        image = image
+    background = re.compile('style="background-image: url\((.+?)\)">').findall(OPEN)
+    for fanart in background:
+        fanart = fanart	
+    match = re.compile('itemprop="season".+?href=".+?" href="(.+?)".+?aria-hidden=".+?"></i>.+?S(.+?)</span>',re.DOTALL).findall(OPEN)
+    for url,season in match:
+        season = 'S'+(season).replace('  ','').replace('\n','').replace('    ','').replace('	','')
+        url = Main + url
+        Menu((season).replace('  ',''),url,100101,image,fanart,description,'')
+        setView('Movies', 'info')
+	
+def Grab_Episode(url,name,fanart,extra,iconimage):
+    main_name = extra 
+    season = name
+    OPEN = Open_Url(url)
+    image = iconimage
+    match = re.compile('<li itemprop="episode".+?<meta itemprop="url" content="(.+?)">.+?<span class="" itemprop="name">(.+?)</span>.+?<span itemprop="datepublished">(.+?)</span></span>.+?</li>',re.DOTALL).findall(OPEN)
+    for url,name,date in match:
+        name = (name).replace('&nbsp;','-').replace('---',' - ').replace('&#039;','\'').replace('&amp;','&').replace('&quot;','"')
+        url = Main+url
+        date = date
+        full_name = name+' - [COLORred]'+date+'[/COLOR]'
+        Menu(full_name,url,100102,image,fanart,'Aired : '+date,full_name)
+
+def Get_Sources(name,URL,iconimage,fanart):
+    HTML = Open_Url(URL)
+    match = re.compile('<td>.+?<a href="/link/(.+?)".+?height="16px">(.+?)\n',re.DOTALL).findall(HTML)
+    for url,name in match:
+        for item in Sources:
+            if item in url:
+                URL = 'http://www.watchseriesgo.to/link/' + url
+                Play(name,URL,100106,'','','')
+    if len(match)<=0:
+        Menu('[COLORred]NO STREAMS AVAILABLE[/COLOR]','','','','','','')
+		
+		
+def Get_site_link(url,name):
+    season_name = name
+    HTML = Open_Url(url)
+    match = re.compile('<iframe style=.+?" src="(.+?)"').findall(HTML)
+    match2 = re.compile('<IFRAME SRC="(.+?)"').findall(HTML)
+    match3 = re.compile('<IFRAME style=".+?" SRC="(.+?)"').findall(HTML)
+    for url in match:
+        main_1(url,season_name)
+    for url in match2:
+        main_1(url,season_name)
+    for url in match3:
+        main_1(url,season_name)
+
+def main_1(url,season_name):
+    if 'daclips.in' in url:
+        daclips_1(url,season_name)
+    elif 'filehoot.com' in url:
+        filehoot_1(url,season_name)
+    elif 'allmyvideos.net' in url:
+        allmyvid_1(url,season_name)
+    elif 'vidspot.net' in url:
+        vidspot_1(url,season_name)
+    elif 'vodlocker' in url:
+        vodlocker_1(url,season_name)	
+    elif 'vidto' in url:
+        vidto_1(url,season_name)	
+
+
+def vidto_1(url,season_name):
+    HTML = Open_Url(url)
+    match = re.compile('"file" : "(.+?)",\n.+?"default" : .+?,\n.+?"label" : "(.+?)"',re.DOTALL).findall(HTML)
+    for Link,name in match:
+        Printer_1(Link,season_name)
+
+												
+def allmyvid_1(url,season_name):
+    HTML = Open_Url(url)
+    match = re.compile('"file" : "(.+?)",\n.+?"default" : .+?,\n.+?"label" : "(.+?)"',re.DOTALL).findall(HTML)
+    for Link,name in match:
+        Printer_1(Link,season_name)
+
+def vidspot_1(url,season_name):
+    HTML = Open_Url(url)
+    match = re.compile('"file" : "(.+?)",\n.+?"default" : .+?,\n.+?"label" : "(.+?)"').findall(HTML)
+    for Link,name in match:
+        Printer_1(Link,season_name)
+
+def vodlocker_1(url,season_name):
+    HTML = Open_Url(url)
+    match = re.compile('file: "(.+?)",.+?skin',re.DOTALL).findall(HTML)
+    for Link in match:
+        Printer_1(Link,season_name)
+
+def daclips_1(url,season_name):
+    HTML = Open_Url(url)
+    match = re.compile('{ file: "(.+?)", type:"video" }').findall(HTML)
+    for Link in match:
+        Printer_1(Link,season_name)
+
+def filehoot_1(url,season_name):
+    HTML = Open_Url(url)
+    match = re.compile('file: "(.+?)",.+?skin',re.DOTALL).findall(HTML)
+    for Link in match:
+        Printer_1(Link,season_name)
+
+def Printer_1(Link,season_name):
+    if 'http:/' in Link:
+        resolve(Link)
+
+def Resolve(url):
+    play = xbmc.Player()
+    try:
+        play.play(url)
+    except:
+        pass
 
 ####################################################################PROCESSES###################################################
 def Open_Url(url):
@@ -191,8 +314,28 @@ def Open_Url(url):
 def setView(content, viewType):
 	if content:
 	    xbmcplugin.setContent(int(sys.argv[1]), content)
+
+def Menu(name,url,mode,iconimage,fanart,description,extra,showcontext=True,allinfo={}):
+        u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)+"&fanart="+urllib.quote_plus(fanart)+"&description="+urllib.quote_plus(description)
+        ok=True
+        liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
+        liz.setInfo( type="Video", infoLabels={ "Title": name, "Plot": description } )
+        liz.setProperty( "Fanart_Image", fanart )
+        if showcontext:
+            contextMenu = []
+
+            if showcontext == 'fav':
+                contextMenu.append(('Remove from '+ADDON_NAME+'Favorites','XBMC.RunPlugin(%s?mode=105&name=%s)'
+                                    %(sys.argv[0], urllib.quote_plus(name))))
+            if not name in FAV:
+                contextMenu.append(('Add to '+ADDON_NAME+' Favorites','XBMC.RunPlugin(%s?mode=104&name=%s&url=%s&iconimage=%s&fanart=%s&fav_mode=%s)'
+                         %(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage), urllib.quote_plus(fanart), mode)))
+            liz.addContextMenuItems(contextMenu)
+        ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=True)
+        return ok
+
 		
-def Menu(name,url,mode,iconimage,fanart,description,showcontext=True,allinfo={}):
+def Menu_1(name,url,mode,iconimage,fanart,description,extra,showcontext=True,allinfo={}):
         u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         ok=True
         liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
@@ -245,7 +388,7 @@ def resolve(url):
 		try:
 			xbmc.Player().play(url, xbmcgui.ListItem(name))
 		except:
-			xbmcgui.Dialog().notification("Sanctuary", "unplayable stream")
+			xbmcgui.Dialog().notification("dojo streams", "unplayable stream")
 			sys.exit()
 
 def addon_log(string):
@@ -345,6 +488,7 @@ iconimage=None
 mode=None
 fanart=None
 description=None
+extra=None
 fav_mode=None
 
 
@@ -426,6 +570,10 @@ if mode==7:
 
 elif mode==8:
     wizard(name,url,description)
+elif mode == 100100: Grab_Season(iconimage,url,extra)
+elif mode == 100101: Grab_Episode(url,name,fanart,extra,iconimage)
+elif mode == 100102: Get_Sources(name,url,iconimage,fanart)
+elif mode == 100106: Get_site_link(url,name)
 
 
 xbmcplugin.addSortMethod(int(sys.argv[1]), 1)
