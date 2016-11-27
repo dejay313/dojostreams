@@ -18,6 +18,22 @@
   </extension>
 </addon>
 
+<addon id="plugin.video.reaper" name="[COLORslategray][I]Reaper 2.0[/I][/COLOR]" version="[COLORgoldenrod]0.0.1[/COLOR]" provider-name="[COLORburlywood]RM[/COLOR]">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+	<import addon="script.module.urlresolver"  version="2.1.2"/>
+	<import addon="script.module.addon.common" />
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+		<provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+	<summary lang="en">[COLORlightslategray]Reaper 2.0[/COLOR]</summary>
+	<description lang="en">[COLORlightsteelblue]The Home of [/COLOR][COLORslategray]The [/COLOR][COLORlightsteelblue]Original [/COLOR][COLORslategray]Reaper.[/COLOR]</description>
+	<platform>all</platform>
+  </extension>
+</addon>
+
 <addon id="plugin.video.youtube" name="YouTube" version="5.2.4" provider-name="h0d3nt3uf3l, jdf76, bromix">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
@@ -57,7 +73,7 @@
 	</extension>
 </addon>
 
-    <addon id="repository.dojo" name="Dojo Streams" version="0.1.3" provider-name="dojo">
+    <addon id="repository.dojo" name="Dojo Streams" version="0.1.4" provider-name="dojo">
         <requires>
             <import addon="xbmc.addon" version="12.0.0"/>
         </requires>
