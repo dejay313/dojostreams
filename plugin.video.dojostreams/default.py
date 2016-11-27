@@ -41,7 +41,7 @@ text_file_path = ADDON_PATH + '/resources/'
 ICON = ADDON_PATH + 'icon.png'
 FANART = ADDON_PATH + 'fanart.jpg'
 PATH = 'DojoStreams'
-VERSION = '0.0.2'
+VERSION = '0.0.4'
 Dialog = xbmcgui.Dialog()
 addon_data = xbmc.translatePath('special://home/userdata/addon_data/'+addon_id+'/')
 favorites = os.path.join(addon_data, 'favorites.txt')
@@ -67,12 +67,12 @@ def Main_Menu():
             Menu(name,url,1,icon,fanart,desc,'')
         elif 'watchseries' in url:
             Menu(name,url,100100,icon,fanart,desc,'')
-
+        elif name == '[COLORred]Builds Section[/COLOR]':
+            Menu('[COLORred]Builds Section[/COLOR]','',7,icon,fanart,desc,'')
+        elif '[COLORred]Dojo Search[/COLOR]':
+            Menu('[COLORred]Dojo Search[/COLOR]',url,3,icon,fanart,desc,'')
         else:
             Play(name,url,2,icon,fanart,desc)
-    else:
-        Menu('[COLORred]Builds Section[/COLOR]','',7,icon,fanart,desc,'')
-        Menu('[COLORred]Dojo Search[/COLOR]',url,3,icon,fanart,desc,'')
 
     setView('tvshows', 'Media Info 3')			
 	
@@ -145,7 +145,7 @@ def CATEGORIES():
 def wizard(name,url,description):
     path = xbmc.translatePath(os.path.join('special://home/addons','packages'))
     dp = xbmcgui.DialogProgress()
-    dp.create("Your Build Is Downloading","This May Take Several Minutes","", "")
+    dp.create(name+" Is Downloading","This May Take Several Minutes","", "")
     lib=os.path.join(path, name+'.zip')
     try:
        os.remove(lib)
@@ -154,7 +154,7 @@ def wizard(name,url,description):
     downloader.download(url, lib, dp)
     addonfolder = xbmc.translatePath(os.path.join('special://','home'))
     time.sleep(2)
-    dp.update(0,"", "Installing Your Build Please Wait")
+    dp.update(0,"", "Installing "+name+" Please Wait")
     print '======================================='
     print addonfolder
     print '======================================='
