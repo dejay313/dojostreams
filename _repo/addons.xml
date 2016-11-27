@@ -18,7 +18,7 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.reaper" name="[COLORslategray][I]Reaper 2.0[/I][/COLOR]" version="[COLORgoldenrod]0.0.1[/COLOR]" provider-name="[COLORburlywood]RM[/COLOR]">
+<addon id="plugin.video.reaper" name="Reaper 2.0" version="0.0.1" provider-name="RM">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
 	<import addon="script.module.urlresolver"  version="2.1.2"/>
