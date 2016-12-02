@@ -34,6 +34,35 @@
   </extension>
 </addon>
 
+<addon id="plugin.video.silenthunter" name="[COLOR red] Silent Hunter [/COLOR]" version="1.1.3" provider-name="SH">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+	<import addon="script.module.t0mm0.common" version="2.0.0"/>
+    <import addon="script.module.beautifulsoup" version="3.2.1"/>
+    <import addon="script.module.simple.downloader" version="0.9.4"/>
+    <import addon="script.module.beautifulsoup4" />
+    <import addon="script.module.simple.downloader" version="0.9.4"/>
+    <import addon="script.module.requests" />
+    <import addon="script.module.httplib2" />
+    <import addon="script.module.youtube.dl" optional="true"/>
+    <import addon="plugin.video.youtube" version="3.0.0"/>
+	<import addon="script.module.urlresolver" />
+	<import addon="script.module.liveresolver" />
+    <import addon="script.module.simplejson" />
+	<import addon="script.module.f4mproxy" />
+    <import addon="script.common.plugin.cache" version="2.5.2"/>
+    <import addon="script.module.metahandler" version="2.5.1"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Silent Hunter Streams</summary>
+    <description lang="en">[I]Welcome to Silent Hunter the home of Quality Releases[/I]</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+
 <addon id="plugin.video.youtube" name="YouTube" version="5.2.4" provider-name="h0d3nt3uf3l, jdf76, bromix">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
@@ -73,7 +102,7 @@
 	</extension>
 </addon>
 
-    <addon id="repository.dojo" name="Dojo Streams" version="0.1.4" provider-name="dojo">
+    <addon id="repository.dojo" name="Dojo Streams" version="0.1.5" provider-name="dojo">
         <requires>
             <import addon="xbmc.addon" version="12.0.0"/>
         </requires>
@@ -88,6 +117,36 @@
             <description>The description can be longer. Using [CR] you can create a newline. The use of other markup is not advised.</description>
             <platform>all</platform>
     </extension>
+</addon>
+
+    <addon id="repository.reaperrepo" name="The Reaper Repo" version="1.1.2" provider-name="RM">
+        <requires>
+            <import addon="xbmc.addon" version="12.0.0"/>
+        </requires>
+        <extension point="xbmc.addon.repository" name="The Reaper Repo">
+            <info compressed="false">https://raw.githubusercontent.com/Rogue-Media/reaperrepo/master/_repo/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/Rogue-Media/reaperrepo/master/_repo/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/Rogue-Media/reaperrepo/master/_repo/</datadir>
+            <hashes>false</hashes>
+        </extension>
+        <extension point="xbmc.addon.metadata">
+            <summary>The Reaper Repository v1.1</summary>
+            <description>Welcome to The Reaper Repository</description>
+            <platform>all</platform>
+    </extension>
+</addon>
+
+<addon id="repository.silenthunter" name="[COLOR orange] Silent Hunter [/COLOR]" version="1.0" provider-name="SH">
+<extension point="xbmc.addon.repository" name="Silent Hunter">
+		<info compressed="false">http://silenthunter.srve.io/plugins/addons.xml</info>
+		<checksum>http://silenthunter.srve.io/plugins/addons.xml.md5</checksum>
+		<datadir zip="true">https://silenthunter.srve.io/plugins/</datadir>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary>The Silent Hunter Repository</summary>
+		<description>The Silent Hunter Repository v1.0</description>
+		<platform>all</platform>
+	</extension>
 </addon>
 
 <addon id="script.module.urlresolver" name="URLResolver" version="3.0.24" provider-name="tvaddons.ag, Eldorado">

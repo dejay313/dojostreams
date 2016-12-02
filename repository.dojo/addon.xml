@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-    <addon id="repository.dojo" name="Dojo Streams" version="0.1.4" provider-name="dojo">
+    <addon id="repository.dojo" name="Dojo Streams" version="0.1.5" provider-name="dojo">
         <requires>
             <import addon="xbmc.addon" version="12.0.0"/>
         </requires>

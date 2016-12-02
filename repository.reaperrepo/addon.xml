@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <addon id="repository.reaperrepo" name="The Reaper Repo" version="1.1.2" provider-name="RM">
+        <requires>
+            <import addon="xbmc.addon" version="12.0.0"/>
+        </requires>
+        <extension point="xbmc.addon.repository" name="The Reaper Repo">
+            <info compressed="false">https://raw.githubusercontent.com/Rogue-Media/reaperrepo/master/_repo/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/Rogue-Media/reaperrepo/master/_repo/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/Rogue-Media/reaperrepo/master/_repo/</datadir>
+            <hashes>false</hashes>
+        </extension>
+        <extension point="xbmc.addon.metadata">
+            <summary>The Reaper Repository v1.1</summary>
+            <description>Welcome to The Reaper Repository</description>
+            <platform>all</platform>
+    </extension>
+</addon>
