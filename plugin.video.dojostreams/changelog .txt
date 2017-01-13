@@ -1,0 +1,5 @@
+1.0.5
+Added a change log 
+Added more builds into dojo build section
+Updated reaper addon
+Updated reaper repository

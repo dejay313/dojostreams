@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
-<addon id="plugin.video.dojostreams" name="Dojo Streams" version="0.0.4" provider-name="Dojo">
+<addon id="plugin.video.cerberus-reaper" name="Cerberus-Reaper" version="2.0.2" provider-name="RM">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+	<import addon="script.module.urlresolver"  version="3.0.0"/>
+	<import addon="script.module.addon.common" />
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+		<provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+	<summary lang="en">[COLORlightslategray]Cerberus-Reaper[/COLOR]</summary>
+	<description lang="en">[COLORslategray]Welcome to the Cerberus-Reaper Media Plugin[/COLOR]</description>
+	<platform>all</platform>
+  </extension>
+</addon>
+
+<addon id="plugin.video.dojostreams" name="Dojo Streams" version="0.0.5" provider-name="Dojo">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
 	<import addon="script.module.urlresolver"  version="3.0.0"/>
@@ -14,22 +30,6 @@
 	<summary lang="en">Dojo Streams </summary>
 	<description lang="en">A plugin for playing online lists</description>
 	<disclaimer lang="en">The original author neither hosts or stores any content, the original author has no affiliation with content hosts</disclaimer>
-	<platform>all</platform>
-  </extension>
-</addon>
-
-<addon id="plugin.video.reaper" name="Reaper 2.0" version="0.0.1" provider-name="RM">
-  <requires>
-    <import addon="xbmc.python" version="2.1.0"/>
-	<import addon="script.module.urlresolver"  version="2.1.2"/>
-	<import addon="script.module.addon.common" />
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-		<provides>video</provides>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-	<summary lang="en">[COLORlightslategray]Reaper 2.0[/COLOR]</summary>
-	<description lang="en">[COLORlightsteelblue]The Home of [/COLOR][COLORslategray]The [/COLOR][COLORlightsteelblue]Original [/COLOR][COLORslategray]Reaper.[/COLOR]</description>
 	<platform>all</platform>
   </extension>
 </addon>
@@ -102,7 +102,24 @@
 	</extension>
 </addon>
 
-    <addon id="repository.dojo" name="Dojo Streams" version="0.1.5" provider-name="dojo">
+    <addon id="repository.cerberus" name="Cerberus-Reaper Repo" version="1.0.2" provider-name="RM">
+        <requires>
+            <import addon="xbmc.addon" version="12.0.0"/>
+        </requires>
+        <extension point="xbmc.addon.repository" name="Cerberus-Reaper Repo">
+            <info compressed="false">https://raw.githubusercontent.com/Rogue-Media/Cerberus/master/_repo/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/Rogue-Media/Cerberus/master/_repo/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/Rogue-Media/Cerberus/master/_repo/</datadir>
+            <hashes>false</hashes>
+        </extension>
+        <extension point="xbmc.addon.metadata">
+            <summary>The Cerberus-Reaper Repo v1.2</summary>
+            <description>Welcome to The Cerberus-Reaper Repo</description>
+            <platform>all</platform>
+    </extension>
+</addon>
+
+    <addon id="repository.dojo" name="Dojo Streams" version="0.1.6" provider-name="dojo">
         <requires>
             <import addon="xbmc.addon" version="12.0.0"/>
         </requires>
@@ -115,23 +132,6 @@
         <extension point="xbmc.addon.metadata">
             <summary>A short summary of this addon</summary>
             <description>The description can be longer. Using [CR] you can create a newline. The use of other markup is not advised.</description>
-            <platform>all</platform>
-    </extension>
-</addon>
-
-    <addon id="repository.reaperrepo" name="The Reaper Repo" version="1.1.2" provider-name="RM">
-        <requires>
-            <import addon="xbmc.addon" version="12.0.0"/>
-        </requires>
-        <extension point="xbmc.addon.repository" name="The Reaper Repo">
-            <info compressed="false">https://raw.githubusercontent.com/Rogue-Media/reaperrepo/master/_repo/addons.xml</info>
-            <checksum>https://raw.githubusercontent.com/Rogue-Media/reaperrepo/master/_repo/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/Rogue-Media/reaperrepo/master/_repo/</datadir>
-            <hashes>false</hashes>
-        </extension>
-        <extension point="xbmc.addon.metadata">
-            <summary>The Reaper Repository v1.1</summary>
-            <description>Welcome to The Reaper Repository</description>
             <platform>all</platform>
     </extension>
 </addon>

@@ -3,3 +3,15 @@ url=<https://dl.dropboxusercontent.com/s/p2xn4dcenukqtyl/PHANTOM.zip>
 img=<http://i.dailymail.co.uk/i/pix/2013/01/08/article-2258927-02C526EF00000578-896_306x252.jpg>
 fanart=<http://herovision.x10host.com/dojo/Phantom_Pics/phantom1.png>
 description=<Phantom Build By James Atkinson>
+
+name=<Silent Hunter>
+url=<https://archive.org/download/hunter_201701/hunter.zip>
+img=<https://archive.org/download/silenthunter908_gmail_Icon_201701/icon.png>
+fanart=<https://archive.org/download/fanart_20170111/fanart.jpg>
+description=<Silent Hunter Build By Lee Popham>
+
+name=<Mammoth>
+url=<https://archive.org/download/mammothupdate_20161231/mammothupdate.zip>
+img=<https://archive.org/download/silenthunter908_gmail_Icon_20170111/icon.png>
+fanart=<http://herovision.x10host.com/dojo/Phantom_Pics/mammoth.png>
+description=<Mammoth Build By Lee Popham>

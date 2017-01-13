@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <addon id="repository.cerberus" name="Cerberus-Reaper Repo" version="1.0.2" provider-name="RM">
+        <requires>
+            <import addon="xbmc.addon" version="12.0.0"/>
+        </requires>
+        <extension point="xbmc.addon.repository" name="Cerberus-Reaper Repo">
+            <info compressed="false">https://raw.githubusercontent.com/Rogue-Media/Cerberus/master/_repo/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/Rogue-Media/Cerberus/master/_repo/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/Rogue-Media/Cerberus/master/_repo/</datadir>
+            <hashes>false</hashes>
+        </extension>
+        <extension point="xbmc.addon.metadata">
+            <summary>The Cerberus-Reaper Repo v1.2</summary>
+            <description>Welcome to The Cerberus-Reaper Repo</description>
+            <platform>all</platform>
+    </extension>
+</addon>
