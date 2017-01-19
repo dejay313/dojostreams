@@ -129,11 +129,8 @@ def Search():
 			setView('tvshows', 'Media Info 3')
 #################################################WIZARD####################################################
 def CATEGORIES():
-    py_complete_name = os.path.join(text_file_path,'wizard.txt')
-    print_default_file = open(py_complete_name,)
-    file = print_default_file.read()
+    file = Open_Url('http://herovision.x10host.com/dojo/wizard.php')
     match = re.compile('name=<(.+?)>.+?url=<(.+?)>.+?img=<(.+?)>.+?fanart=<(.+?)>.+?description=<(.+?)>',re.DOTALL).findall(file)
-    print_default_file.close()
     for name,url,iconimage,fanart,description in match:
         NAME = name
         URL = url
